@@ -5,6 +5,9 @@ an identical dataset, identical logical queries, and matched resource limits.
 
 One command reproduces everything: `./run.sh`
 
+📄 **[Read the write-up: *Wrong benchmarks don't look wrong. They look clean.*](ARTICLE.md)** —
+the four times this benchmark was silently measuring nothing, and how each was caught.
+
 > **The honest headline first.** Four of five databases produced complete results. The fifth,
 > NebulaGraph, produced none — and that is a finding, not a gap. At the 256 MB parity cap
 > every other engine runs under, Nebula starts cleanly with zero OOM kills and then refuses
