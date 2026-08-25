@@ -226,6 +226,27 @@ cp .env.example .env     # fill in credentials — never committed
 
 Requires Python 3.12 and Docker. Pinned versions in `requirements.txt`.
 
+### Running the client in-region (removes the network floor)
+
+The published numbers were measured from a laptop, ~302 ms from CognoDB. To re-measure from
+inside CognoDB's own region and resolve the `<x*` cells:
+
+```bash
+brew install --cask google-cloud-sdk && gcloud auth login   # one-time, interactive
+./scripts/setup_vm.sh create
+gcloud compute scp .env cognodb-bench:~/bench/.env --zone=us-east4-a
+./scripts/setup_vm.sh run       # writes to results/client-us-east4/
+./scripts/setup_vm.sh delete    # bills hourly — tear it down
+```
+
+Results are namespaced by **where the client ran** (`BENCH_RESULTS_SUBDIR`), because client
+placement changes these numbers more than any engine difference does. An in-region run
+writes to `results/client-us-east4/` and **cannot overwrite** the laptop results, so the two
+stay directly comparable and the existing submission is never at risk.
+
+The DB containers keep their `cpus: 0.5 / mem_limit: 256m` caps on the VM, so engine parity
+with the laptop run is preserved — only the client moves.
+
 **Note on Aura credentials:** some Aura instances authenticate with the **instance ID** as
 both username and database name, not `neo4j`/`neo4j`. Copy both verbatim from the
 credentials file — a wrong username and a wrong password return identical
@@ -235,8 +256,12 @@ credentials file — a wrong username and a wrong password return identical
 
 ## Known limitations
 
-1. **Client is not in-region.** The single largest defect. Everything marked `<x*` becomes
-   measurable from a `us-east4` VM. This is the top of the future-work list.
+1. **Client is not in-region.** The single largest defect: a 302 ms round trip is larger
+   than every engine time measured, so seven cells in the matrix are upper bounds rather
+   than measurements. Fully automated remedy in
+   [`scripts/setup_vm.sh`](scripts/setup_vm.sh) — provisions a `us-east4` VM, re-runs the
+   suite, and writes to a separate `results/client-us-east4/` so these numbers survive
+   intact for comparison.
 2. **NebulaGraph has no numbers.** Documented, reproducible, deliberate.
 3. **FalkorDB's collapse was measured at `cpus: 0.5`.** A tight CPU cap is exactly what
    amplifies write contention. The claim is "FalkorDB wedged under 40 concurrent writers *at

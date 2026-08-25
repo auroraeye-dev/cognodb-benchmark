@@ -222,3 +222,4 @@ __marimo__/
 # The *sampled* dataset (dataset/sample/*.csv) IS committed: it is the small,
 # frozen benchmark input that every result depends on for reproducibility.
 dataset/raw/
+CLAUDE.md

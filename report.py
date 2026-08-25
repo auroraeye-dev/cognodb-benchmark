@@ -9,9 +9,15 @@ paste-or-include into README when writing up the analysis section.
 Usage: python report.py
 """
 import json
+import os
 from pathlib import Path
 
 RESULTS_DIR = Path(__file__).parent / "results"
+# Mirror the runner's client-placement namespacing (BENCH_RESULTS_SUBDIR) so report and
+# chart generation read the same run the harness just wrote.
+_sub = os.environ.get("BENCH_RESULTS_SUBDIR", "").strip()
+if _sub:
+    RESULTS_DIR = RESULTS_DIR / _sub
 OUT_PATH = RESULTS_DIR / "RESULTS.md"
 
 DB_ORDER = ["cognodb", "neo4j_aura", "memgraph", "falkordb", "nebula"]

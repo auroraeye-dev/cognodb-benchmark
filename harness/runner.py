@@ -24,7 +24,15 @@ from harness.stats import summarize, variance_across_runs
 
 load_dotenv()
 
+# Results are namespaced by WHERE THE CLIENT RAN, because client placement changes the
+# numbers more than any engine difference in this benchmark (a 302 ms RTT dwarfs every
+# engine time we measure). Keeping laptop and in-region runs in separate directories means
+# a later run can never overwrite an earlier one, and the two remain directly comparable.
+# Default preserves the original flat layout so existing results stay where they are.
 RESULTS_DIR = Path(__file__).parent.parent / "results"
+_subdir = os.environ.get("BENCH_RESULTS_SUBDIR", "").strip()
+if _subdir:
+    RESULTS_DIR = RESULTS_DIR / _subdir
 
 READ_WORKLOADS = ["one_hop", "two_hop", "three_hop", "point_lookup", "indexed_lookup", "aggregation"]
 

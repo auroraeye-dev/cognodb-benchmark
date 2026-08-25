@@ -7,6 +7,7 @@ Writes PNGs to charts/output/ (git-committed alongside the results JSON they wer
 built from, so the README's embedded images don't go stale/missing).
 """
 import json
+import os
 from pathlib import Path
 
 import matplotlib
@@ -15,6 +16,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 RESULTS_DIR = Path(__file__).parent.parent / "results"
+# Mirror the runner's client-placement namespacing (BENCH_RESULTS_SUBDIR) so report and
+# chart generation read the same run the harness just wrote.
+_sub = os.environ.get("BENCH_RESULTS_SUBDIR", "").strip()
+if _sub:
+    RESULTS_DIR = RESULTS_DIR / _sub
 OUTPUT_DIR = Path(__file__).parent / "output"
 
 DB_ORDER = ["cognodb", "neo4j_aura", "memgraph", "falkordb", "nebula"]
