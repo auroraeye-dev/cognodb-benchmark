@@ -1,0 +1,25 @@
+{
+  "db": "FalkorDB",
+  "db_key": "falkordb",
+  "counts_before": {
+    "nodes": 16000,
+    "rels": 204109
+  },
+  "load": {
+    "nodes_loaded": 16000,
+    "rels_loaded": 204109,
+    "wall_clock_sec": 7.228829374998895,
+    "nodes_per_sec": 2213.35975301014,
+    "rels_per_sec": 28235.415364196666,
+    "load_method": "driver batching (UNWIND via GRAPH.QUERY, batch size 1000)"
+  },
+  "counts_after": {
+    "nodes": 16000,
+    "rels": 204109
+  },
+  "expected": {
+    "nodes": 16000,
+    "rels": 204109
+  },
+  "counts_match": true
+}

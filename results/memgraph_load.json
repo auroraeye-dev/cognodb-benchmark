@@ -1,0 +1,25 @@
+{
+  "db": "Memgraph",
+  "db_key": "memgraph",
+  "counts_before": {
+    "nodes": 16000,
+    "rels": 147000
+  },
+  "load": {
+    "nodes_loaded": 16000,
+    "rels_loaded": 204109,
+    "wall_clock_sec": 2.1019445420024567,
+    "nodes_per_sec": 7611.999118091528,
+    "rels_per_sec": 97104.84549965897,
+    "load_method": "driver batching (UNWIND, batch size 1000)"
+  },
+  "counts_after": {
+    "nodes": 16000,
+    "rels": 204109
+  },
+  "expected": {
+    "nodes": 16000,
+    "rels": 204109
+  },
+  "counts_match": true
+}

@@ -1,0 +1,5 @@
+key,value
+seed,42
+method,bfs_induced_subgraph
+node_count,16000
+edge_count,204109

@@ -1,0 +1,72 @@
+# Self-hosted DBs, capped to match CognoDB's free tier as closely as each engine
+# allows: cpus: 0.5, mem_limit: 256m. See the README fairness ledger for exactly
+# where an engine refused to start that small and what we actually ran it at.
+#
+# Managed DBs (CognoDB, Neo4j Aura) are NOT here — they're cloud instances reached
+# over the network, configured entirely via .env. This file only covers the three
+# self-hosted engines: Memgraph, FalkorDB, NebulaGraph.
+services:
+  memgraph:
+    image: memgraph/memgraph:2.19.0
+    ports:
+      - "7688:7687"  # non-default host port: 7687 stays free for CognoDB/Aura tunnels if ever needed
+    cpus: 0.5
+    mem_limit: 256m
+    command: ["--memory-limit=200"]  # MB, leaves headroom under the 256m container cap for process overhead
+
+  falkordb:
+    image: falkordb/falkordb:v4.4.1
+    ports:
+      - "6379:6379"
+    cpus: 0.5
+    mem_limit: 256m
+
+  # NebulaGraph is a multi-process, multi-service architecture (meta + storage +
+  # graph daemons), which cannot realistically run inside a single 256 MB cap —
+  # documented as a fairness-ledger exception in the README, along with the total
+  # memory actually used across all three services below.
+  nebula-metad:
+    image: vesoft/nebula-metad:v3.8.0
+    command:
+      - "--meta_server_addrs=nebula-metad:9559"
+      - "--local_ip=nebula-metad"
+      - "--ws_ip=nebula-metad"
+      - "--port=9559"
+      - "--data_path=/data/meta"
+    cpus: 0.5
+    mem_limit: 512m
+    volumes:
+      - nebula-meta-data:/data/meta
+
+  nebula-storaged:
+    image: vesoft/nebula-storaged:v3.8.0
+    command:
+      - "--meta_server_addrs=nebula-metad:9559"
+      - "--local_ip=nebula-storaged"
+      - "--ws_ip=nebula-storaged"
+      - "--port=9779"
+      - "--data_path=/data/storage"
+    cpus: 0.5
+    mem_limit: 512m
+    depends_on:
+      - nebula-metad
+    volumes:
+      - nebula-storage-data:/data/storage
+
+  nebula-graphd:
+    image: vesoft/nebula-graphd:v3.8.0
+    command:
+      - "--meta_server_addrs=nebula-metad:9559"
+      - "--local_ip=nebula-graphd"
+      - "--ws_ip=nebula-graphd"
+      - "--port=9669"
+    ports:
+      - "9669:9669"
+    cpus: 0.5
+    mem_limit: 512m
+    depends_on:
+      - nebula-storaged
+
+volumes:
+  nebula-meta-data:
+  nebula-storage-data:

@@ -1,0 +1,25 @@
+{
+  "db": "Neo4j Aura Free",
+  "db_key": "neo4j_aura",
+  "counts_before": {
+    "nodes": 0,
+    "rels": 0
+  },
+  "load": {
+    "nodes_loaded": 16000,
+    "rels_loaded": 204109,
+    "wall_clock_sec": 40.00040716700096,
+    "nodes_per_sec": 399.99592837143626,
+    "rels_per_sec": 5102.673058997842,
+    "load_method": "driver batching (UNWIND, batch size 1000)"
+  },
+  "counts_after": {
+    "nodes": 16000,
+    "rels": 204109
+  },
+  "expected": {
+    "nodes": 16000,
+    "rels": 204109
+  },
+  "counts_match": true
+}

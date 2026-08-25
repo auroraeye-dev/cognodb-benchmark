@@ -1,0 +1,25 @@
+{
+  "db": "CognoDB Cloud",
+  "db_key": "cognodb",
+  "counts_before": {
+    "nodes": 0,
+    "rels": 0
+  },
+  "load": {
+    "nodes_loaded": 16000,
+    "rels_loaded": 204109,
+    "wall_clock_sec": 80.14086662500085,
+    "nodes_per_sec": 199.6484524539521,
+    "rels_per_sec": 2546.8778738702317,
+    "load_method": "driver batching (UNWIND, batch size 1000)"
+  },
+  "counts_after": {
+    "nodes": 16000,
+    "rels": 204109
+  },
+  "expected": {
+    "nodes": 16000,
+    "rels": 204109
+  },
+  "counts_match": true
+}

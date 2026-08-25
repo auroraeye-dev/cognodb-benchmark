@@ -1,0 +1,16 @@
+# Fairness experiment ONLY — not used for the benchmark run.
+#
+# CLAUDE.md requires documenting where an engine refuses to start at the 256 MB cap the
+# other self-hosted engines run under. This override caps every Nebula service at 256m
+# so that claim rests on a measurement rather than an assumption. Result is recorded in
+# docs/fairness-ledger.md.
+#
+# Usage:
+#   docker compose -f docker/docker-compose.yml -f docker/docker-compose.nebula-256.yml up -d
+services:
+  nebula-metad:
+    mem_limit: 256m
+  nebula-storaged:
+    mem_limit: 256m
+  nebula-graphd:
+    mem_limit: 256m

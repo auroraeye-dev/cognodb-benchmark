@@ -1,0 +1,4 @@
+{
+  "db_key": "nebula",
+  "error": "nGQL failed: 'LOOKUP ON Person YIELD id(vertex) AS vid | YIELD COUNT($-.vid) AS c' -> Storage Error: RPC failure, probably timeout."
+}

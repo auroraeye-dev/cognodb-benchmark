@@ -1,0 +1,19 @@
+# Pinned so the benchmark is reproducible months from now, not just today.
+#
+# Target interpreter: Python 3.12 (see README setup). Every version below has a
+# prebuilt cp312 wheel — nothing compiles from source, so a fresh checkout sets
+# up in seconds rather than minutes and can't fail on a missing C toolchain.
+#
+# neo4j is deliberately held on the 5.x line: it's the conventional, most widely
+# documented driver generation for Bolt, and it's what CognoDB/Aura/Memgraph docs
+# and examples target. 6.x exists but buys us nothing here and moves us off the
+# well-trodden path for no benchmark-relevant reason.
+neo4j==5.28.4             # Bolt+Cypher driver: CognoDB, Neo4j Aura, Memgraph all speak Bolt
+FalkorDB==1.7.1           # FalkorDB's own client (wraps redis-py, adds Cypher-over-RESP)
+redis==8.1.0              # transitive dep of falkordb, pinned explicitly for clarity
+nebula3-python==3.8.3     # NebulaGraph's nGQL client (different wire protocol + language)
+numpy==2.5.2              # percentiles (p50/p95) and run-to-run variance (std dev)
+matplotlib==3.11.1        # charts: warm vs cold, concurrency sweep, per-metric bar/line charts
+pandas==3.0.5             # tabulating results into README markdown tables
+python-dotenv==1.2.3      # loads .env for all DB credentials/URIs, never hardcoded
+tqdm==4.70.0              # progress bars for the multi-hour ingest/warmup/iteration loops
